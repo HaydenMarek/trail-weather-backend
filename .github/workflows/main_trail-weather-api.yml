@@ -21,10 +21,10 @@ jobs:
         with:
           dotnet-version: '9.x'
       - name: Restore
-        run: dotnet restore ./trail-weather-api/trail-weather-api.sln
+        run: dotnet restore ./trail-weather.sln
 
       - name: Build 
-        run: dotnet build ./trail-weather-api/trail-weather-api.sln --configuration Release --norestore
+        run: dotnet build ./trail-weather.sln --configuration Release --norestore
 
       - name: Publish
-        run: dotnet pubish ./trail-weather-api/trail-weather-api.sln --configuration Release --no-build
+        run: dotnet pubish ./trail-weather.sln --configuration Release --no-build
