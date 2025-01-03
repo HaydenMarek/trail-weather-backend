@@ -24,7 +24,7 @@ jobs:
         run: dotnet restore ./trail-weather.sln
 
       - name: Build 
-        run: dotnet build ./trail-weather.sln --configuration Release --norestore
+        run: dotnet build ./trail-weather.sln --configuration Release --no-restore
 
       - name: Publish
         run: dotnet pubish ./trail-weather.sln --configuration Release --no-build
