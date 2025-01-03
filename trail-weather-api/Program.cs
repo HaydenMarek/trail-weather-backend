@@ -42,4 +42,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/", () => Results.Ok("Minimal api controller result.")); 
+
 app.Run();
