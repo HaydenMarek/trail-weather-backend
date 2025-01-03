@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - trail-weather-api
+name: Build and deploy ASP.Net Core app to Azure Web App - trail-weather-api 
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,46 +20,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
+      - name: Restore
+        run: dotnet restore ./trail-weather-api/trail-weather-api.sln
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Build 
+        run: dotnet build ./trail-weather-api/trail-weather-api.sln --configuration Release --norestore
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F68EA3510FFA48C8BFEE3154CBC66307 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_BB06679BAC85481E8865533BD81A0D6F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7C1238E900FE4B599E8CCA56DF15BE9C }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'trail-weather-api'
-          slot-name: 'Production'
-          package: .
-          
+      - name: Publish
+        run: dotnet pubish ./trail-weather-api/trail-weather-api.sln --configuration Release --no-build
